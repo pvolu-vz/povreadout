@@ -1,6 +1,6 @@
 # veza-pov-readout — operator's guide
 
-Companion notes for [`veza-pov-readout.md`](veza-pov-readout.md). The agent file is the spec the model reads; this file is for the human kicking it off — what to have ready before invoking, what surprises to expect, and how to get a deck you can actually send.
+Companion notes for [`veza-pov-readout.md`](agents/veza-pov-readout.md). The agent file is the spec the model reads; this file is for the human kicking it off — what to have ready before invoking, what surprises to expect, and how to get a deck you can actually send.
 
 ## What it does
 
@@ -8,8 +8,8 @@ Orchestrates end-to-end production of a Veza POV (Proof of Value) executive read
 
 | Skill | Owns |
 |---|---|
-| [`collect-pov-screenshots`](../skills/collect-pov-screenshots/SKILL.md) | Keychain login, parallel screenshot workers, Query Builder pair/graph captures |
-| [`build-pov-deck`](../skills/build-pov-deck/SKILL.md) | Template clone, text find/replace, image swap, output render |
+| [`collect-pov-screenshots`](skills/collect-pov-screenshots/SKILL.md) | Keychain login, parallel screenshot workers, Query Builder pair/graph captures |
+| [`build-pov-deck`](skills/build-pov-deck/SKILL.md) | Template clone, text find/replace, image swap, output render |
 
 The agent's job is the glue: gather customer-specific inputs, update capture config, drive the skills, author the manifest, and report what the human still needs to review by hand.
 

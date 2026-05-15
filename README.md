@@ -132,7 +132,7 @@ In Claude Code, ask the agent:
 
 The `veza-pov-readout` agent will walk through Phase 0–6: gather inputs, update `~/.povreadout/config.json`, drive the screenshot capture, author a manifest, render the PPTX. The output lands on your Desktop by default.
 
-The full operator's guide is in [agents/veza-pov-readout.README.md](agents/veza-pov-readout.README.md) — read it before your first run, especially the "Tips that come from running it" section.
+The full operator's guide is in [OPERATORS_GUIDE.md](OPERATORS_GUIDE.md) — read it before your first run, especially the "Tips that come from running it" section.
 
 ## License
 
