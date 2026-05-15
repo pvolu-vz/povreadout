@@ -1,0 +1,67 @@
+# Example manifest for build_deck.py.
+#
+# Run:
+#   python3 ${CLAUDE_PLUGIN_ROOT}/skills/build-pov-deck/scripts/build_deck.py \
+#       --manifest sections.example.yaml \
+#       --output   ~/Desktop/AcmeCorp-Veza-POV-ReadOut.pptx
+#
+# Discover slide_index / picture_index values with:
+#   python3 ${CLAUDE_PLUGIN_ROOT}/skills/build-pov-deck/scripts/list_slides.py
+#   python3 ${CLAUDE_PLUGIN_ROOT}/skills/build-pov-deck/scripts/list_slide_pictures.py <slide_index>
+
+# Global find/replace — applied to every text frame on every slide.
+# Useful for customer name, presenter names, and dates that show up
+# in headers / footers across the deck.
+text_replacements:
+  - find: "SmurfitWestrock"
+    replace: "AcmeCorp"
+  - find: "May2026"
+    replace: "Aug 2026"
+  - find: "Trey Brennen"
+    replace: "Pat Doe"
+
+# Per-slide overrides. slide_index is 1-based — it matches the slide
+# number you see in PowerPoint's slide pane.
+slide_overrides:
+
+  # Title slide — usually just text tweaks above are enough, but you can
+  # override per-slide if a customer name appears in two contexts with
+  # different replacements.
+  - slide_index: 1
+    text_replacements:
+      - find: "POV Executive Read-out"
+        replace: "Veza POV Executive Read-out"
+
+  # Highlight 1: total systems integrated (customer-specific metric).
+  - slide_index: 17
+    text_replacements:
+      - find: "25 systems integrated"
+        replace: "17 systems integrated"
+
+  # Oracle JDE: Access Graph — slide with two screenshots.
+  - slide_index: 26
+    image_replacements:
+      # picture_index is 0-based z-order. Run list_slide_pictures.py 26
+      # to confirm which picture is which before authoring.
+      - picture_index: 0
+        source: ~/.povreadout/screenshots/pov-f/query-builder-graph/jde-user-to-program.png
+      - picture_index: 1
+        source: ~/.povreadout/screenshots/pov-f/query-builder/jde-detail-crop.png
+
+  # SQL Server: Access Graph (Databases).
+  - slide_index: 29
+    image_replacements:
+      - picture_index: 0
+        source: ~/.povreadout/screenshots/pov-f/query-builder-graph/sql-user-to-databases.png
+
+  # Azure AD: dashboard.
+  - slide_index: 48
+    image_replacements:
+      - picture_index: 0
+        source: ~/.povreadout/screenshots/pov-f/dashboard/dashboard.png
+
+# Slides to drop entirely (1-based indices). Use sparingly — the template
+# ordering tells a story. Removing slides leaves the underlying part in the
+# package; PowerPoint ignores unreferenced parts.
+remove_slides:
+  # - 22  # Highlight 5 (Cost Impact) — drop if no licensing data captured

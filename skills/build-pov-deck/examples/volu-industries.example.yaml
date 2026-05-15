@@ -1,0 +1,69 @@
+# Volu Industries — POV Executive Read-out manifest
+# Generated 2026-05-14
+#
+# Build:
+#   python3 ${CLAUDE_PLUGIN_ROOT}/skills/build-pov-deck/scripts/build_deck.py \
+#       --manifest ~/.povreadout/manifests/volu-industries.yaml \
+#       --output   ~/Desktop/VoluIndustries-Veza-POV-ReadOut.pptx
+
+# Customer-wide find/replace applied to every slide.
+text_replacements:
+  - find: "SmurfitWestrock"
+    replace: "Volu Industries"
+  - find: "May2026"
+    replace: "May 2026"
+  - find: "Trey Brennen"
+    replace: "Pedro Volu"
+
+slide_overrides:
+
+  # Highlight 2: Automated Risk Profile
+  # pic 0 = top half (3.94in tall) → primary risk dashboard
+  # pic 1 = bottom half (2.73in tall) → individual risk view
+  - slide_index: 18
+    image_replacements:
+      - picture_index: 0
+        source: ~/.povreadout/screenshots/pov-f/risk/risk-dashboard.png
+      - picture_index: 1
+        source: ~/.povreadout/screenshots/pov-f/risk/risk-ACCESS_RISK.png
+
+  # Highlight 3: IAM Dashboards
+  # pic 1 is the TOP slot (y=0.78), pic 0 is the BOTTOM slot (y=3.67) — note inverted z-order
+  - slide_index: 19
+    image_replacements:
+      - picture_index: 1
+        source: ~/.povreadout/screenshots/pov-f/dashboard/dashboard.png
+      - picture_index: 0
+        source: ~/.povreadout/screenshots/pov-f/governance/governance.png
+
+  # Nested Group Visibility → repurpose the existing image slot for the
+  # Azure AD license-by-user graph. Slide 48 (Azure AD: Overview) has zero
+  # picture placeholders in the template, so the graph lands here instead.
+  - slide_index: 47
+    image_replacements:
+      - picture_index: 0
+        source: ~/.povreadout/screenshots/pov-f/query-builder-graph/azure-ad-license-by-user.png
+
+# Drop the system deep-dive slides we have no captures for (Foundry, JDE,
+# SQL Server, GICO, OTM, Hyperion). Slide 42 ("Every Local Account…") is
+# the general close-out for the deep-dive section and is kept.
+remove_slides:
+  - 23  # Mapping Foundry Access for SOX & UAR Readiness
+  - 24  # UAR Requirements (Foundry)
+  - 25  # Benefits (Foundry)
+  - 26  # Oracle JDE: Access Graph
+  - 27  # Oracle JDE: User Access Review
+  - 28  # Benefits (JDE)
+  - 29  # SQL Server: Access Graph (Databases)
+  - 30  # SQL Server: Access Graph (Tables)
+  - 31  # SQL Server: User Access Review
+  - 32  # Benefits (SQL Server)
+  - 33  # GICO: Access Graph
+  - 34  # GICO: User Access Review
+  - 35  # Benefits (GICO)
+  - 36  # OTM: Access Graph
+  - 37  # OTM: User Access Review
+  - 38  # Benefits (OTM)
+  - 39  # Hyperion (HFM): Access Graph
+  - 40  # Hyperion (HFM): User Access Review
+  - 41  # Benefits (Hyperion)

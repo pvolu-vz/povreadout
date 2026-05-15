@@ -1,0 +1,106 @@
+{
+  "site": "pov-f",
+  "storage_state_path": "~/.povreadout/state/storage_state.json",
+  "screenshot_dir": "~/.povreadout/screenshots",
+  "viewport": { "width": 1920, "height": 1080 },
+  "agents": {
+    "dashboard": {
+      "urls": [
+        { "name": "dashboard", "url": "https://pov-f.vezacloud.com/app/dashboard/library" },
+        { "name": "dashboard-AzureRisks", "url": "https://standard.vezacloud.com/app/dashboard/favorites/0b1c1abe-66aa-463c-88c3-505bba76e693" },
+        { "name": "dashboard-ActiveDirectoryRisks", "url": "https://standard.vezacloud.com/app/dashboard/library/24015679-9423-4340-9e7e-5019fd170ff6" }
+      ]
+    },
+    "risk": {
+      "urls": [
+        { "name": "risk-dashboard", "url": "https://pov-f.vezacloud.com/app/risks?tableFilter=time_range+eq+%22pastmonth%22" },
+        { "name": "risk-MFA-Health", "url": "https://pov-f.vezacloud.com/app/risks?tab=all-risks&tableFilter=time_range+eq+%22pastmonth%22+and+status+eq+%22OPEN%22+and+%28risk_profiles+eq+%22MFA_HEALTH%22%29" },
+        { "name": "risk-PRIVILEGE_ACCESS", "url": "https://pov-f.vezacloud.com/app/risks?tab=all-risks&tableFilter=time_range+eq+%22pastmonth%22+and+status+eq+%22OPEN%22+and+%28risk_profiles+eq+%22PRIVILEGE_ACCESS%22%29" },
+        { "name": "risk-DORMANT_ACCESS", "url": "https://pov-f.vezacloud.com/app/risks?tab=all-risks&tableFilter=time_range+eq+%22pastmonth%22+and+status+eq+%22OPEN%22+and+%28risk_profiles+eq+%22DORMANT_ACCESS%22%29" },
+        { "name": "risk-BLAST_RADIUS", "url": "https://pov-f.vezacloud.com/app/risks?tab=all-risks&tableFilter=time_range+eq+%22pastmonth%22+and+status+eq+%22OPEN%22+and+%28risk_profiles+eq+%22BLAST_RADIUS%22%29" },
+        { "name": "risk-ORPHANED_ACCESS", "url": "https://pov-f.vezacloud.com/app/risks?tab=all-risks&tableFilter=time_range+eq+%22pastmonth%22+and+status+eq+%22OPEN%22+and+%28risk_profiles+eq+%22ORPHANED_ACCESS%22%29" },
+        { "name": "risk-ACCESS_RISK", "url": "https://pov-f.vezacloud.com/app/risks?tab=all-risks&tableFilter=time_range+eq+%22pastmonth%22+and+status+eq+%22OPEN%22+and+%28risk_profiles+eq+%22ACCESS_RISK%22%29" },
+        { "name": "risk-IDENTITY_HYGIENE", "url": "https://pov-f.vezacloud.com/app/risks?tab=all-risks&tableFilter=time_range+eq+%22pastmonth%22+and+status+eq+%22OPEN%22+and+%28risk_profiles+eq+%22IDENTITY_HYGIENE%22%29" }
+      ]
+    },
+    "governance": {
+      "urls": [
+        { "name": "governance", "url": "https://pov-f.vezacloud.com/app/workflows/certifications" }
+      ]
+    }
+  },
+  "query_builder": {
+    "url": "https://pov-f.vezacloud.com/app/query-builder",
+    "pairs": [
+      { "name": "azure-ad-license-by-user", "entity_type": "AzureADLicense", "relates_to": "AzureADUser" },
+      { "name": "azure-ad-ad-user", "entity_type": "AzureADUser", "relates_to": "ActiveDirectoryUser" },
+      { "name": "okta-user-s3-buckets", "entity_type": "OktaUser", "relates_to": "S3Buckets" },
+      {
+        "name": "azure-ad-license-by-dormant-user",
+        "entity_type": "AzureADLicense",
+        "relates_to": "AzureADUser",
+        "relates_to_conditions": {
+          "operator": "AND",
+          "specs": [],
+          "tag_specs": [],
+          "child_expressions": [
+            {
+              "operator": "OR",
+              "specs": [
+                { "property": "is_active", "fn": "EQ", "value": false, "not": false },
+                { "property": "last_successful_login_at", "fn": "LT", "value": "$COOKIE_TIMEVAR_90_DAY_AGO", "not": false }
+              ],
+              "tag_specs": [],
+              "child_expressions": []
+            }
+          ]
+        }
+      }
+    ],
+    "graph_pairs": [
+      { "name": "azure-ad-license-by-user", "entity_type": "AzureADLicense", "relates_to": "AzureADUser" },
+      { "name": "azure-ad-ad-user", "entity_type": "AzureADUser", "relates_to": "ActiveDirectoryUser" },
+      { "name": "okta-user-s3-buckets", "entity_type": "OktaUser", "relates_to": "S3Buckets" },
+      {
+        "name": "azure-ad-license-by-dormant-user",
+        "entity_type": "AzureADLicense",
+        "relates_to": "AzureADUser",
+        "relates_to_conditions": {
+          "operator": "AND",
+          "specs": [],
+          "tag_specs": [],
+          "child_expressions": [
+            {
+              "operator": "OR",
+              "specs": [
+                { "property": "is_active", "fn": "EQ", "value": false, "not": false },
+                { "property": "last_successful_login_at", "fn": "LT", "value": "$COOKIE_TIMEVAR_90_DAY_AGO", "not": false }
+              ],
+              "tag_specs": [],
+              "child_expressions": []
+            }
+          ]
+        }
+      },
+      {
+        "name": "azure-ad-inactive-users",
+        "entity_type": "AzureADUser",
+        "condition_expression": {
+          "operator": "AND",
+          "specs": [],
+          "tag_specs": [],
+          "child_expressions": [
+            {
+              "operator": "AND",
+              "specs": [
+                { "property": "is_active", "fn": "EQ", "value": false, "not": false }
+              ],
+              "tag_specs": [],
+              "child_expressions": []
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

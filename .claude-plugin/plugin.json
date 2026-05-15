@@ -1,0 +1,13 @@
+{
+  "name": "povreadout",
+  "description": "Veza POV (Proof of Value) executive read-out toolkit: agent + skills that authenticate to a Veza tenant, capture screenshots in parallel, and assemble a customer-branded PowerPoint deck from a template.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Pedro Volu",
+    "email": "pedro.volu@servicenow.com"
+  },
+  "homepage": "https://github.com/pvolu-vz/povreadout",
+  "repository": "https://github.com/pvolu-vz/povreadout.git",
+  "license": "MIT",
+  "keywords": ["veza", "pov", "screenshots", "powerpoint", "playwright"]
+}
