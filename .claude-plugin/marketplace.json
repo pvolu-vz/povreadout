@@ -4,7 +4,7 @@
   "plugins": [
     {
       "name": "povreadout",
-      "source": ".",
+      "source": { "source": "github", "repo": "pvolu-vz/povreadout" },
       "description": "Veza POV (Proof of Value) executive read-out toolkit: agent + skills that authenticate to a Veza tenant, capture screenshots in parallel, and assemble a customer-branded PowerPoint deck from a template."
     }
   ]
