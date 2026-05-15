@@ -7,8 +7,8 @@
       "source": "./",
       "description": "Veza POV (Proof of Value) executive read-out toolkit: agent + skills that authenticate to a Veza tenant, capture screenshots in parallel, and assemble a customer-branded PowerPoint deck from a template.",
       "author": {
-        "name": "Jesse Vincent",
-        "email": "jesse@fsck.com"
+        "name": "Pedro Volu",
+        "email": "pedro.volu@servicenow.com"
       }
     }
   ]
