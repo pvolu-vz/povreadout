@@ -10,6 +10,77 @@ Bundles one agent and two skills:
 | **`collect-pov-screenshots`** (skill) | macOS-keychain login (password + TOTP), parallel screenshot workers (dashboards / risks / governance), Query Builder pair captures, graph view captures. |
 | **`build-pov-deck`** (skill) | Clones a template PPTX, applies text find/replace, swaps in captured screenshots, validates, renders the output file. |
 
+## How it works
+
+```mermaid
+flowchart TB
+    User([User in Claude Code])
+
+    subgraph Agent["veza-pov-readout (agent)"]
+        Bootstrap[Bootstrap ~/.povreadout/<br/>copy config.example.json]
+        Gather[Gather customer inputs<br/>name, scope, dashboards, QB pairs]
+        EditConfig[Update ~/.povreadout/config.json]
+        Manifest[Author manifest YAML<br/>~/.povreadout/manifests/&lt;slug&gt;.yaml]
+    end
+
+    subgraph Collect["collect-pov-screenshots (skill)"]
+        direction TB
+        Login[Login worker<br/>Playwright + Chromium]
+        Workers[Parallel capture workers<br/>dashboards / risks / governance<br/>+ Query Builder pairs + graph views]
+    end
+
+    subgraph Build["build-pov-deck (skill)"]
+        Clone[Clone template PPTX]
+        Apply[Apply text find/replace<br/>+ swap images]
+        Validate[Validate + render]
+    end
+
+    subgraph Keychain["macOS keychain"]
+        Pw[(&lt;prefix&gt;-password)]
+        Totp[(&lt;prefix&gt;-totp<br/>base32 secret)]
+    end
+
+    subgraph Tenant["Customer Veza tenant"]
+        LoginPage[Login + MFA page]
+        Pages[Dashboards / Risks /<br/>Governance / Query Builder /<br/>Graph views]
+    end
+
+    subgraph Disk["~/.povreadout/ (writable state)"]
+        Config[(config.json)]
+        State[(state/storage_state.json<br/>session cookies)]
+        Shots[(screenshots/&lt;site&gt;/...)]
+        ManifestFile[(manifests/&lt;slug&gt;.yaml)]
+    end
+
+    Desktop[(~/Desktop/&lt;customer&gt;-readout.pptx)]
+
+    User -->|"Build a POV read-out for AcmeCorp"| Agent
+    Bootstrap --> Gather --> EditConfig --> Collect
+    EditConfig -.writes.-> Config
+
+    Login -->|"security find-generic-password"| Pw
+    Login -->|"security find-generic-password"| Totp
+    Totp -.->|"generate current TOTP code"| Login
+    Login -->|"submit credentials + TOTP"| LoginPage
+    LoginPage -->|"authenticated session"| Login
+    Login -.persists.-> State
+
+    State -.reused by.-> Workers
+    Config -.read by.-> Workers
+    Workers -->|"navigate + full-page screenshot"| Pages
+    Pages -->|"PNGs"| Shots
+
+    Collect --> Manifest
+    Manifest -.writes.-> ManifestFile
+    Manifest --> Build
+
+    ManifestFile -.read by.-> Apply
+    Shots -.read by.-> Apply
+    Clone --> Apply --> Validate --> Desktop
+
+    Validate -->|"output path"| User
+```
+
 ## Install
 
 ```
